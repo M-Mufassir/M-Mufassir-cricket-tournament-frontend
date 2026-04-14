@@ -35,69 +35,12 @@ function TeamEditForm({
         </div>
 
         <div>
-          <label className="field-label">Club Name</label>
-          <input
-            className="field-input"
-            value={formData.clubName}
-            onChange={(event) => onTeamFieldChange("clubName", event.target.value)}
-          />
-        </div>
-
-        <div>
-          <label className="field-label">Captain Name</label>
-          <input
-            className="field-input"
-            value={formData.captainName}
-            onChange={(event) => onTeamFieldChange("captainName", event.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="field-label">Contact Email</label>
-          <input
-            className="field-input"
-            type="email"
-            value={formData.contactEmail}
-            onChange={(event) => onTeamFieldChange("contactEmail", event.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="field-label">Contact Phone</label>
-          <input
-            className="field-input"
-            value={formData.contactPhone}
-            onChange={(event) => onTeamFieldChange("contactPhone", event.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="field-label">City</label>
-          <input
-            className="field-input"
-            value={formData.city}
-            onChange={(event) => onTeamFieldChange("city", event.target.value)}
-          />
-        </div>
-
-        <div>
-          <label className="field-label">Coach Name</label>
-          <input
-            className="field-input"
-            value={formData.coachName}
-            onChange={(event) => onTeamFieldChange("coachName", event.target.value)}
-          />
-        </div>
-
-        <div>
           <label className="field-label">Payment Reference</label>
           <input
             className="field-input"
             value={formData.paymentReference}
             onChange={(event) => onTeamFieldChange("paymentReference", event.target.value)}
+            required
           />
         </div>
 
@@ -115,7 +58,9 @@ function TeamEditForm({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h4 className="font-display text-xl font-semibold text-ink">Edit Squad</h4>
-          <p className="text-sm text-slate-600">Keep the squad between 11 and 20 players.</p>
+          <p className="text-sm text-slate-600">
+            Keep the squad between 11 and 20 players and assign one captain with one vice captain.
+          </p>
         </div>
 
         <button className="secondary-button" type="button" onClick={onAddPlayer}>
@@ -126,12 +71,13 @@ function TeamEditForm({
       <div className="space-y-4">
         {formData.players.map((player, index) => (
           <PlayerFields
-            key={`${index}-${player.fullName}`}
+            key={player.clientId || player.id || `player-${index}`}
             player={player}
             index={index}
             onChange={(field, value) => onPlayerChange(index, field, value)}
             onRemove={() => onRemovePlayer(index)}
             disableRemove={formData.players.length <= 11}
+            showLeadershipControls
           />
         ))}
       </div>

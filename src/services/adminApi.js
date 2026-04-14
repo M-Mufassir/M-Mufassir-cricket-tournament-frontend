@@ -1,4 +1,4 @@
-import { apiRequest } from "./http";
+import { API_BASE_URL, apiRequest } from "./http";
 
 export function loginAdmin(credentials) {
   return apiRequest("/admin/auth/login", {
@@ -53,6 +53,32 @@ export function getAdminTeamById(token, teamId) {
       Authorization: `Bearer ${token}`,
     },
   });
+}
+
+export async function getAdminTeamReceiptUrl(token, teamId) {
+  const response = await fetch(`${API_BASE_URL}/admin/teams/${teamId}/receipt`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    let message = "Unable to open the uploaded receipt.";
+
+    try {
+      const errorPayload = await response.json();
+      message = errorPayload.message || message;
+    } catch (error) {
+      message = "Unable to open the uploaded receipt.";
+    }
+
+    const requestError = new Error(message);
+    requestError.status = response.status;
+    throw requestError;
+  }
+
+  const blob = await response.blob();
+  return URL.createObjectURL(blob);
 }
 
 export function updateAdminTeamStatus(token, teamId, payload) {

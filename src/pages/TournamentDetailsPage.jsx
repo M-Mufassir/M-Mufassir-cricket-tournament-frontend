@@ -48,8 +48,10 @@ function TournamentDetailsPage() {
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-[2rem] bg-ink px-6 py-8 text-white shadow-soft sm:px-8 lg:px-10">
-        <div className="absolute inset-0 bg-stadium-glow opacity-90" />
+      <section className="relative overflow-hidden rounded-[2rem] border border-white/20 bg-ink px-6 py-8 text-white shadow-soft sm:px-8 lg:px-10">
+        <div className="absolute inset-0 bg-stadium-glow opacity-100" />
+        <div className="absolute -right-16 top-8 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-pitch-400/20 blur-3xl" />
         <div className="relative grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.35em] text-field-200">
@@ -63,7 +65,7 @@ function TournamentDetailsPage() {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link className="primary-button bg-field-500 hover:bg-field-600" to="/register">
+              <Link className="primary-button" to="/register">
                 Register Your Team
               </Link>
               <Link className="secondary-button border-white/20 bg-white/10 text-white hover:bg-white/20" to="/instructions">
@@ -72,7 +74,7 @@ function TournamentDetailsPage() {
             </div>
           </div>
 
-          <div className="glass-panel grid gap-4 p-5 text-ink">
+          <div className="glass-panel grid gap-4 p-5 text-ink shadow-2xl shadow-slate-900/15">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-field-700">
                 Registration Status
@@ -83,13 +85,13 @@ function TournamentDetailsPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-2xl bg-cream p-4">
+              <div className="rounded-2xl border border-white/40 bg-white/55 p-4 backdrop-blur-xl">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
                   Entry Fee
                 </p>
                 <p className="mt-2 text-lg font-bold">{formatCurrency(tournament.entryFee)}</p>
               </div>
-              <div className="rounded-2xl bg-cream p-4">
+              <div className="rounded-2xl border border-white/40 bg-white/55 p-4 backdrop-blur-xl">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
                   Max Players
                 </p>

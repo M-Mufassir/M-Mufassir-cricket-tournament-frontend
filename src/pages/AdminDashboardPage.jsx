@@ -11,35 +11,30 @@ import { clearAdminSession, getStoredAdminProfile, getStoredAdminToken } from ".
 import {
   deleteAdminTeam,
   getAdminTeamById,
+  getAdminTeamReceiptUrl,
   getAdminTeams,
   getDashboardSummary,
   updateAdminTeam,
   updateAdminTeamStatus,
 } from "../services/adminApi";
-import { createEmptyPlayer } from "../utils/constants";
+import { createEmptyPlayer, createPlayerClientId } from "../utils/constants";
 import { formatDate } from "../utils/formatters";
 
 function createEditForm(team) {
   return {
     tournamentId: team.tournamentId || "",
     teamName: team.teamName || "",
-    clubName: team.clubName || "",
-    captainName: team.captainName || "",
-    contactEmail: team.contactEmail || "",
-    contactPhone: team.contactPhone || "",
-    city: team.city || "",
-    coachName: team.coachName || "",
     paymentReference: team.paymentReference || "",
     notes: team.notes || "",
-    players: (team.players || []).map((player) => ({
+    players: (team.players || []).map((player, index) => ({
+      clientId: player.id ? `player-${player.id}` : createPlayerClientId(),
       fullName: player.fullName || "",
       role: player.role || "Batsman",
-      age: player.age ?? "",
-      jerseyNumber: player.jerseyNumber ?? "",
-      battingStyle: player.battingStyle || "",
-      bowlingStyle: player.bowlingStyle || "",
+      nicNumber: player.nicNumber || "",
       phoneNumber: player.phoneNumber || "",
       isCaptain: Boolean(player.isCaptain),
+      isViceCaptain: Boolean(player.isViceCaptain),
+      sortOrder: player.sortOrder || index + 1,
     })),
   };
 }
@@ -183,7 +178,19 @@ function AdminDashboardPage() {
             return { ...player, isCaptain: false };
           }
 
+          if (field === "isViceCaptain" && value) {
+            return { ...player, isViceCaptain: false };
+          }
+
           return player;
+        }
+
+        if (field === "isCaptain" && value) {
+          return { ...player, isCaptain: true, isViceCaptain: false };
+        }
+
+        if (field === "isViceCaptain" && value) {
+          return { ...player, isCaptain: false, isViceCaptain: true };
         }
 
         return {
@@ -213,15 +220,9 @@ function AdminDashboardPage() {
         return currentForm;
       }
 
-      const updatedPlayers = currentForm.players.filter((_, index) => index !== playerIndex);
-
-      if (!updatedPlayers.some((player) => player.isCaptain) && updatedPlayers[0]) {
-        updatedPlayers[0].isCaptain = true;
-      }
-
       return {
         ...currentForm,
-        players: updatedPlayers,
+        players: currentForm.players.filter((_, index) => index !== playerIndex),
       };
     });
   }
@@ -268,7 +269,13 @@ function AdminDashboardPage() {
       setIsSaving(true);
       setFeedback({ type: "", message: "" });
 
-      await updateAdminTeam(token, selectedTeam.id, editForm);
+      await updateAdminTeam(token, selectedTeam.id, {
+        ...editForm,
+        players: editForm.players.map((player, index) => ({
+          ...player,
+          sortOrder: index + 1,
+        })),
+      });
       setFeedback({
         type: "success",
         message: "Team details updated successfully.",
@@ -317,6 +324,23 @@ function AdminDashboardPage() {
     }
   }
 
+  async function handleViewReceipt() {
+    if (!selectedTeam) {
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      const receiptUrl = await getAdminTeamReceiptUrl(token, selectedTeam.id);
+      window.open(receiptUrl, "_blank", "noopener,noreferrer");
+      window.setTimeout(() => URL.revokeObjectURL(receiptUrl), 60000);
+    } catch (error) {
+      setFeedback({ type: "error", message: error.message });
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
   function handleLogout() {
     clearAdminSession();
     navigate("/admin/login", { replace: true });
@@ -338,7 +362,7 @@ function AdminDashboardPage() {
               Welcome back{storedAdmin?.fullName ? `, ${storedAdmin.fullName}` : ""}.
             </h1>
             <p className="mt-2 text-sm text-slate-600">
-              Review registrations, manage team records, and keep the public list accurate.
+              Review registrations, manage squad data, and keep the public list accurate.
             </p>
           </div>
 
@@ -369,7 +393,7 @@ function AdminDashboardPage() {
             <div className="flex flex-col gap-4 sm:flex-row">
               <input
                 className="field-input"
-                placeholder="Search team, captain, email, or tournament"
+                placeholder="Search team, player, payment ref, or tournament"
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
               />
@@ -407,7 +431,7 @@ function AdminDashboardPage() {
                       <div>
                         <p className="font-display text-xl font-semibold text-ink">{team.teamName}</p>
                         <p className="mt-1 text-sm text-slate-600">
-                          {team.tournamentTitle} | Captain: {team.captainName}
+                          {team.tournamentTitle} | Captain: {team.captainName || "Not assigned"}
                         </p>
                       </div>
                       <StatusBadge status={team.status} />
@@ -456,7 +480,7 @@ function AdminDashboardPage() {
                       <StatusBadge status={selectedTeam.status} />
                     </div>
                     <p className="mt-2 text-sm text-slate-600">
-                      {selectedTeam.tournamentTitle} | {selectedTeam.city || "City not provided"}
+                      {selectedTeam.tournamentTitle} | Ref: {selectedTeam.paymentReference}
                     </p>
                   </div>
 
@@ -478,13 +502,12 @@ function AdminDashboardPage() {
                 <div className="grid gap-4 md:grid-cols-2">
                   <article className="rounded-3xl bg-slate-50 p-5">
                     <p className="text-xs font-bold uppercase tracking-[0.25em] text-slate-500">
-                      Contact Details
+                      Leadership
                     </p>
                     <div className="mt-4 space-y-2 text-sm text-slate-700">
-                      <p><span className="font-semibold text-ink">Captain:</span> {selectedTeam.captainName}</p>
-                      <p><span className="font-semibold text-ink">Email:</span> {selectedTeam.contactEmail}</p>
-                      <p><span className="font-semibold text-ink">Phone:</span> {selectedTeam.contactPhone}</p>
-                      <p><span className="font-semibold text-ink">Coach:</span> {selectedTeam.coachName || "N/A"}</p>
+                      <p><span className="font-semibold text-ink">Captain:</span> {selectedTeam.captainName || "N/A"}</p>
+                      <p><span className="font-semibold text-ink">Vice Captain:</span> {selectedTeam.viceCaptainName || "N/A"}</p>
+                      <p><span className="font-semibold text-ink">Players:</span> {selectedTeam.players.length}</p>
                     </div>
                   </article>
 
@@ -495,21 +518,17 @@ function AdminDashboardPage() {
                     <div className="mt-4 space-y-2 text-sm text-slate-700">
                       <p>
                         <span className="font-semibold text-ink">Reference:</span>{" "}
-                        {selectedTeam.paymentReference || "Not provided"}
+                        {selectedTeam.paymentReference}
                       </p>
                       <p>
-                        <span className="font-semibold text-ink">Receipt:</span>{" "}
-                        <a
-                          className="font-semibold text-field-700 underline"
-                          href={`${import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || "http://localhost:5000"}${selectedTeam.paymentReceiptPath.startsWith("/") ? selectedTeam.paymentReceiptPath : `/${selectedTeam.paymentReceiptPath}`}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          View uploaded receipt
-                        </a>
+                        <span className="font-semibold text-ink">Receipt File:</span>{" "}
+                        {selectedTeam.paymentReceiptOriginalName}
                       </p>
                       <p><span className="font-semibold text-ink">Submitted:</span> {formatDate(selectedTeam.createdAt)}</p>
                     </div>
+                    <button className="secondary-button mt-4" type="button" onClick={handleViewReceipt}>
+                      View uploaded receipt
+                    </button>
                   </article>
                 </div>
 
@@ -518,15 +537,19 @@ function AdminDashboardPage() {
                     Squad List
                   </p>
                   <div className="mt-4 grid gap-3 md:grid-cols-2">
-                    {selectedTeam.players.map((player) => (
-                      <div key={player.id} className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                    {selectedTeam.players.map((player, index) => (
+                      <div
+                        key={player.id || `${player.nicNumber}-${index}`}
+                        className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
+                      >
                         <p className="font-semibold text-ink">
                           {player.fullName}
                           {player.isCaptain ? " (Captain)" : ""}
+                          {player.isViceCaptain ? " (Vice Captain)" : ""}
                         </p>
-                        <p className="mt-1 text-sm text-slate-600">
-                          {player.role} | Jersey {player.jerseyNumber || "N/A"}
-                        </p>
+                        <p className="mt-1 text-sm text-slate-600">{player.role}</p>
+                        <p className="mt-1 text-sm text-slate-600">NIC: {player.nicNumber}</p>
+                        <p className="mt-1 text-sm text-slate-600">Phone: {player.phoneNumber}</p>
                       </div>
                     ))}
                   </div>

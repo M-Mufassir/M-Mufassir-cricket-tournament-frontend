@@ -1,15 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  color: #101820;
+  color: #0f172a;
   background:
-    radial-gradient(circle at top left, rgba(116, 210, 148, 0.24), transparent 30%),
-    radial-gradient(circle at bottom right, rgba(172, 126, 44, 0.2), transparent 28%),
-    #f8f4eb;
+    radial-gradient(circle at top left, rgba(127, 219, 255, 0.34), transparent 26%),
+    radial-gradient(circle at top right, rgba(249, 115, 22, 0.16), transparent 22%),
+    radial-gradient(circle at bottom left, rgba(20, 150, 212, 0.14), transparent 28%),
+    linear-gradient(180deg, #f6fbff 0%, #eef4ff 52%, #fff7ef 100%);
   font-family: "Manrope", sans-serif;
 }
 
@@ -21,11 +22,24 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  color: #101820;
+  color: #0f172a;
   background:
-    radial-gradient(circle at top left, rgba(116, 210, 148, 0.24), transparent 30%),
-    radial-gradient(circle at bottom right, rgba(172, 126, 44, 0.2), transparent 28%),
-    #f8f4eb;
+    radial-gradient(circle at top left, rgba(127, 219, 255, 0.34), transparent 26%),
+    radial-gradient(circle at top right, rgba(249, 115, 22, 0.16), transparent 22%),
+    radial-gradient(circle at bottom left, rgba(20, 150, 212, 0.14), transparent 28%),
+    linear-gradient(180deg, #f6fbff 0%, #eef4ff 52%, #fff7ef 100%);
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.34), transparent 35%),
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.32), transparent 18%);
+  opacity: 0.9;
 }
 
 * {
@@ -44,7 +58,15 @@ button {
 }
 
 .glass-panel {
-  @apply rounded-3xl border border-white/55 bg-white/75 shadow-soft backdrop-blur-md;
+  @apply rounded-3xl border border-white/40 bg-white/45 shadow-soft backdrop-blur-2xl;
+}
+
+.hero-frame {
+  @apply grid rounded-[2rem] border border-white/45 bg-white/40 shadow-soft backdrop-blur-2xl;
+}
+
+.soft-card {
+  @apply rounded-[1.75rem] border border-white/50 bg-white/50 shadow-soft backdrop-blur-xl;
 }
 
 .section-shell {
@@ -52,17 +74,37 @@ button {
 }
 
 .field-input {
-  @apply w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-field-400 focus:ring-4 focus:ring-field-100;
+  @apply w-full rounded-2xl border border-white/50 bg-white/65 px-4 py-3 text-sm text-slate-900 outline-none backdrop-blur-md transition focus:border-field-300 focus:ring-4 focus:ring-field-100;
 }
 
 .field-label {
   @apply mb-2 block text-sm font-semibold text-slate-700;
 }
 
+.section-kicker {
+  @apply text-xs font-bold uppercase tracking-[0.3em] text-field-700;
+}
+
+.info-card {
+  @apply rounded-[1.6rem] border border-white/45 bg-white/40 px-4 py-4 shadow-soft backdrop-blur-xl;
+}
+
+.info-card-label {
+  @apply text-xs font-bold uppercase tracking-[0.2em] text-slate-500;
+}
+
+.info-card-value {
+  @apply mt-2 text-lg font-semibold text-ink;
+}
+
 .primary-button {
-  @apply inline-flex items-center justify-center rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-slate-900;
+  @apply inline-flex items-center justify-center rounded-full bg-field-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-field-500/20 transition hover:-translate-y-0.5 hover:bg-field-700;
 }
 
 .secondary-button {
-  @apply inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:-translate-y-0.5 hover:border-slate-400;
+  @apply inline-flex items-center justify-center rounded-full border border-white/50 bg-white/55 px-5 py-3 text-sm font-semibold text-slate-800 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-field-200 hover:bg-white/75;
+}
+
+.floating-help-button {
+  @apply flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-field-600 text-xl font-bold text-white shadow-lg shadow-field-600/30 backdrop-blur-xl transition hover:-translate-y-1 hover:bg-field-700;
 }

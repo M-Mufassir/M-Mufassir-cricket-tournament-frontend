@@ -1,36 +1,43 @@
 import { PLAYER_ROLE_OPTIONS } from "../../utils/constants";
 
-function PlayerFields({ player, index, onChange, onRemove, disableRemove }) {
+function PlayerFields({
+  player,
+  index,
+  onChange,
+  onRemove,
+  disableRemove,
+  showLeadershipControls = false,
+  showRemoveButton = true,
+}) {
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-5">
+    <div className="soft-card p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-field-700">
-            Player {index + 1}
-          </p>
-          <h3 className="font-display text-lg font-semibold text-ink">
-            Squad Member Details
-          </h3>
+          <p className="section-kicker">Player {index + 1}</p>
+          <h3 className="font-display text-lg font-semibold text-ink">Squad Member Details</h3>
         </div>
 
-        <button
-          type="button"
-          onClick={onRemove}
-          disabled={disableRemove}
-          className="rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-700 transition hover:border-slate-400 disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          Remove
-        </button>
+        {showRemoveButton ? (
+          <button
+            type="button"
+            onClick={onRemove}
+            disabled={disableRemove}
+            className="rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-700 transition hover:border-slate-400 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Remove
+          </button>
+        ) : null}
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <div className="xl:col-span-2">
-          <label className="field-label">Full Name</label>
+          <label className="field-label">Name with Initials</label>
           <input
             className="field-input"
             value={player.fullName}
             onChange={(event) => onChange("fullName", event.target.value)}
-            placeholder="Enter player's full name"
+            placeholder="M.M. Fernando"
+            required
           />
         </div>
 
@@ -49,57 +56,14 @@ function PlayerFields({ player, index, onChange, onRemove, disableRemove }) {
           </select>
         </div>
 
-        <div className="flex items-end rounded-2xl border border-slate-200 bg-cream px-4 py-3">
-          <label className="flex items-center gap-3 text-sm font-semibold text-slate-700">
-            <input
-              type="checkbox"
-              checked={player.isCaptain}
-              onChange={(event) => onChange("isCaptain", event.target.checked)}
-              className="h-4 w-4 rounded border-slate-300 text-field-600 focus:ring-field-300"
-            />
-            Mark as captain
-          </label>
-        </div>
-
         <div>
-          <label className="field-label">Age</label>
+          <label className="field-label">NIC Number</label>
           <input
             className="field-input"
-            type="number"
-            value={player.age}
-            onChange={(event) => onChange("age", event.target.value)}
-            placeholder="18"
-          />
-        </div>
-
-        <div>
-          <label className="field-label">Jersey Number</label>
-          <input
-            className="field-input"
-            type="number"
-            value={player.jerseyNumber}
-            onChange={(event) => onChange("jerseyNumber", event.target.value)}
-            placeholder="7"
-          />
-        </div>
-
-        <div>
-          <label className="field-label">Batting Style</label>
-          <input
-            className="field-input"
-            value={player.battingStyle}
-            onChange={(event) => onChange("battingStyle", event.target.value)}
-            placeholder="Right-hand bat"
-          />
-        </div>
-
-        <div>
-          <label className="field-label">Bowling Style</label>
-          <input
-            className="field-input"
-            value={player.bowlingStyle}
-            onChange={(event) => onChange("bowlingStyle", event.target.value)}
-            placeholder="Right-arm medium"
+            value={player.nicNumber}
+            onChange={(event) => onChange("nicNumber", event.target.value)}
+            placeholder="200012345678"
+            required
           />
         </div>
 
@@ -110,9 +74,38 @@ function PlayerFields({ player, index, onChange, onRemove, disableRemove }) {
             value={player.phoneNumber}
             onChange={(event) => onChange("phoneNumber", event.target.value)}
             placeholder="+94 77 123 4567"
+            required
           />
         </div>
       </div>
+
+      {showLeadershipControls ? (
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          <label className="rounded-2xl border border-slate-200 bg-cream px-4 py-3 text-sm font-semibold text-slate-700">
+            <span className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                checked={player.isCaptain}
+                onChange={(event) => onChange("isCaptain", event.target.checked)}
+                className="h-4 w-4 rounded border-slate-300 text-field-600 focus:ring-field-300"
+              />
+              Mark as captain
+            </span>
+          </label>
+
+          <label className="rounded-2xl border border-slate-200 bg-cream px-4 py-3 text-sm font-semibold text-slate-700">
+            <span className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                checked={player.isViceCaptain}
+                onChange={(event) => onChange("isViceCaptain", event.target.checked)}
+                className="h-4 w-4 rounded border-slate-300 text-field-600 focus:ring-field-300"
+              />
+              Mark as vice captain
+            </span>
+          </label>
+        </div>
+      ) : null}
     </div>
   );
 }

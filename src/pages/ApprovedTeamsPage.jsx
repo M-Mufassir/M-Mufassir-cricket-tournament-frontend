@@ -52,39 +52,39 @@ function ApprovedTeamsPage() {
 
   return (
     <div className="space-y-8">
-      <section className="glass-panel px-6 py-8 sm:px-8">
-        <p className="text-xs font-bold uppercase tracking-[0.3em] text-field-700">
-          Approved Teams
-        </p>
+      <section className="hero-frame px-6 py-8 sm:px-8">
+        <p className="section-kicker">Approved Teams</p>
         <h2 className="mt-4 font-display text-4xl font-bold text-ink">
           Public list of accepted squads
         </h2>
-        <p className="mt-4 text-base leading-7 text-slate-600">
-          Showing approved teams for tournament ID {tournamentId}.
+        <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">
+          Showing approved teams for tournament ID {tournamentId}. Captains and vice captains are
+          highlighted from the submitted squad.
         </p>
       </section>
 
       <section className="grid gap-5 lg:grid-cols-2">
         {approvedTeams.map((team) => (
-          <article key={team.id} className="glass-panel p-6">
+          <article key={team.id} className="soft-card p-6">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-field-700">
-                  {team.tournamentTitle}
-                </p>
+                <p className="section-kicker">{team.tournamentTitle}</p>
                 <h3 className="mt-2 font-display text-2xl font-semibold text-ink">
                   {team.teamName}
                 </h3>
-                <p className="mt-1 text-sm text-slate-600">
-                  {team.clubName || "Independent Team"} | Captain: {team.captainName}
+                <p className="mt-2 text-sm text-slate-600">
+                  Captain: {team.captainName || "Not set"} | Vice Captain:{" "}
+                  {team.viceCaptainName || "Not set"}
                 </p>
               </div>
 
               <div className="rounded-2xl bg-cream px-4 py-3 text-right">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
-                  City
+                  Venue
                 </p>
-                <p className="mt-2 text-sm font-semibold text-slate-800">{team.city || "N/A"}</p>
+                <p className="mt-2 text-sm font-semibold text-slate-800">
+                  {team.tournamentLocation}
+                </p>
               </div>
             </div>
 
@@ -93,11 +93,15 @@ function ApprovedTeamsPage() {
                 Squad
               </p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                {team.players.map((player) => (
-                  <div key={player.id} className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+                {team.players.map((player, index) => (
+                  <div
+                    key={player.id || `${player.nicNumber}-${index}`}
+                    className="rounded-2xl border border-slate-200 bg-white px-4 py-3"
+                  >
                     <p className="text-sm font-semibold text-ink">
                       {player.fullName}
                       {player.isCaptain ? " (Captain)" : ""}
+                      {player.isViceCaptain ? " (Vice Captain)" : ""}
                     </p>
                     <p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">
                       {player.role}
