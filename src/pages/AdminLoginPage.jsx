@@ -47,13 +47,6 @@ function AdminLoginPage() {
             Login with your admin account to approve, reject, edit, or remove team submissions.
           </p>
 
-          <div className="mt-8 rounded-3xl bg-white/10 p-5">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-field-200">
-              Seed Admin
-            </p>
-            <p className="mt-3 text-sm text-slate-100">Email: admin@cricketapp.com</p>
-            <p className="mt-1 text-sm text-slate-100">Password: Admin@12345</p>
-          </div>
         </section>
 
         <section className="glass-panel p-8">
@@ -77,7 +70,7 @@ function AdminLoginPage() {
                 onChange={(event) =>
                   setCredentials((current) => ({ ...current, email: event.target.value }))
                 }
-                placeholder="admin@cricketapp.com"
+                placeholder="Enter your email"
                 required
               />
             </div>

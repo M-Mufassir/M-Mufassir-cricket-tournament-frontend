@@ -81,13 +81,6 @@ Default local value:
 
 - `http://localhost:5000/api`
 
-## Admin Login
-
-Use the backend seed admin account:
-
-- Email: `admin@cricketapp.com`
-- Password: `Admin@12345`
-
 ## Notes
 
 - Admin authentication is stored in `localStorage`
