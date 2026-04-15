@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 
 import AlertMessage from "../components/common/AlertMessage";
 import CricketMotionScene from "../components/common/CricketMotionScene";
+import CricketPosterCard from "../components/common/CricketPosterCard";
 import EmptyState from "../components/common/EmptyState";
 import PageLoader from "../components/common/PageLoader";
+import SportsIcon from "../components/common/SportsIcon";
 import { getPublicTournament } from "../services/publicApi";
 import { formatCurrency, formatDate, formatStatusLabel } from "../utils/formatters";
 
@@ -78,18 +80,27 @@ function TournamentDetailsPage() {
 
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               <div className="hero-stat">
+                <div className="hero-stat-icon">
+                  <SportsIcon icon="fee" className="h-5 w-5" />
+                </div>
                 <p className="hero-stat-label">Entry Fee</p>
                 <p className="mt-2 font-display text-2xl font-semibold text-ink">
                   {formatCurrency(tournament.entryFee)}
                 </p>
               </div>
               <div className="hero-stat">
+                <div className="hero-stat-icon">
+                  <SportsIcon icon="teams" className="h-5 w-5" />
+                </div>
                 <p className="hero-stat-label">Squad Size</p>
                 <p className="mt-2 font-display text-2xl font-semibold text-ink">
                   {tournament.maxPlayersPerTeam} Players
                 </p>
               </div>
               <div className="hero-stat">
+                <div className="hero-stat-icon">
+                  <SportsIcon icon="calendar" className="h-5 w-5" />
+                </div>
                 <p className="hero-stat-label">Starts</p>
                 <p className="mt-2 font-display text-2xl font-semibold text-ink">
                   {formatDate(tournament.startDate)}
@@ -141,6 +152,9 @@ function TournamentDetailsPage() {
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <article className="glass-panel p-5 sm:p-6">
+          <div className="hero-stat-icon">
+            <SportsIcon icon="location" className="h-5 w-5" />
+          </div>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Venue</p>
           <h3 className="mt-3 font-display text-2xl font-semibold text-ink">
             {tournament.location}
@@ -151,6 +165,9 @@ function TournamentDetailsPage() {
         </article>
 
         <article className="glass-panel p-5 sm:p-6">
+          <div className="hero-stat-icon">
+            <SportsIcon icon="calendar" className="h-5 w-5" />
+          </div>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Tournament Starts</p>
           <h3 className="mt-3 font-display text-2xl font-semibold text-ink">
             {formatDate(tournament.startDate)}
@@ -161,6 +178,9 @@ function TournamentDetailsPage() {
         </article>
 
         <article className="glass-panel p-5 sm:p-6">
+          <div className="hero-stat-icon">
+            <SportsIcon icon="trophy" className="h-5 w-5" />
+          </div>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Tournament Ends</p>
           <h3 className="mt-3 font-display text-2xl font-semibold text-ink">
             {formatDate(tournament.endDate)}
@@ -171,6 +191,9 @@ function TournamentDetailsPage() {
         </article>
 
         <article className="glass-panel p-5 sm:p-6">
+          <div className="hero-stat-icon">
+            <SportsIcon icon="shield-check" className="h-5 w-5" />
+          </div>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Registration Deadline</p>
           <h3 className="mt-3 font-display text-2xl font-semibold text-ink">
             {formatDate(tournament.registrationDeadline)}
@@ -179,6 +202,24 @@ function TournamentDetailsPage() {
             Receipts and squad details should be submitted before this date for review.
           </p>
         </article>
+      </section>
+
+      <section className="poster-grid">
+        <CricketPosterCard
+          variant="stadium"
+          title="Ground Atmosphere"
+          subtitle="A stadium-style panel that gives the tournament page a stronger match setting."
+        />
+        <CricketPosterCard
+          variant="trophy"
+          title="Prize Focus"
+          subtitle="Keeps the competition front and center with a stronger tournament presentation."
+        />
+        <CricketPosterCard
+          variant="strategy"
+          title="Squad Planning"
+          subtitle="Reinforces preparation, selection, and squad readiness before registration closes."
+        />
       </section>
     </div>
   );

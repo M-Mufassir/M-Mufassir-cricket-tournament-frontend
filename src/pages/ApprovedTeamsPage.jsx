@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 
 import AlertMessage from "../components/common/AlertMessage";
 import CricketMotionScene from "../components/common/CricketMotionScene";
+import CricketPosterCard from "../components/common/CricketPosterCard";
 import EmptyState from "../components/common/EmptyState";
 import PageLoader from "../components/common/PageLoader";
+import SportsIcon from "../components/common/SportsIcon";
 import { getApprovedTeams, getPublicTournament } from "../services/publicApi";
 
 function ApprovedTeamsPage() {
@@ -59,25 +61,34 @@ function ApprovedTeamsPage() {
         <div>
           <p className="section-kicker">Approved Teams</p>
           <h2 className="headline-glow mt-4 font-display text-4xl font-bold text-ink sm:text-5xl">
-            Public list of accepted squads
+            Official list of accepted squads
           </h2>
           <p className="mt-4 max-w-3xl text-base leading-8 text-slate-600">
-            Showing approved teams for tournament ID {tournamentId}. Captains and vice captains are
-            highlighted from the submitted squad.
+            Approved teams for tournament ID {tournamentId} are listed below, with captains and
+            vice captains identified in each squad.
           </p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
             <div className="hero-stat">
+              <div className="hero-stat-icon">
+                <SportsIcon icon="shield-check" className="h-5 w-5" />
+              </div>
               <p className="hero-stat-label">Approved Squads</p>
               <p className="mt-2 font-display text-2xl font-semibold text-ink">{approvedCount}</p>
             </div>
             <div className="hero-stat">
+              <div className="hero-stat-icon">
+                <SportsIcon icon="guide" className="h-5 w-5" />
+              </div>
               <p className="hero-stat-label">Tournament ID</p>
               <p className="mt-2 font-display text-2xl font-semibold text-ink">{tournamentId}</p>
             </div>
             <div className="hero-stat">
-              <p className="hero-stat-label">Visibility</p>
-              <p className="mt-2 font-display text-2xl font-semibold text-ink">Public Board</p>
+              <div className="hero-stat-icon">
+                <SportsIcon icon="stadium" className="h-5 w-5" />
+              </div>
+              <p className="hero-stat-label">Listing</p>
+              <p className="mt-2 font-display text-2xl font-semibold text-ink">Official Board</p>
             </div>
           </div>
         </div>
@@ -89,8 +100,7 @@ function ApprovedTeamsPage() {
               Team Board
             </p>
             <p className="mt-3 text-sm leading-7 text-slate-200">
-              This board helps players and spectators quickly confirm which squads have completed
-              the admin review process.
+              Approved sides are published here once the tournament review process is complete.
             </p>
           </div>
         </div>
@@ -122,6 +132,9 @@ function ApprovedTeamsPage() {
               </div>
 
               <div className="rounded-2xl bg-cream px-4 py-3 text-left sm:text-right">
+                <div className="mb-2 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-field-700 shadow-sm sm:ml-auto">
+                  <SportsIcon icon="location" className="h-5 w-5" />
+                </div>
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
                   Venue
                 </p>
@@ -164,6 +177,19 @@ function ApprovedTeamsPage() {
             </div>
           </article>
         ))}
+      </section>
+
+      <section className="poster-grid">
+        <CricketPosterCard
+          variant="trophy"
+          title="Tournament Honors"
+          subtitle="Strengthens the official presentation of the approved teams section."
+        />
+        <CricketPosterCard
+          variant="stadium"
+          title="Ground Board"
+          subtitle="Gives the approved squads page the character of a formal tournament listing."
+        />
       </section>
     </div>
   );

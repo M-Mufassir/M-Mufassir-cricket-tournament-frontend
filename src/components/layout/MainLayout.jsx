@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 import FloatingAdminHelp from "../common/FloatingAdminHelp";
+import SportsIcon from "../common/SportsIcon";
 import { SITE_BRAND } from "../../utils/constants";
 
 const navigationLinks = [
@@ -14,10 +15,10 @@ const navigationLinks = [
 function MainLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const tickerItems = [
-    `${SITE_BRAND.location} cricket registration portal`,
-    "Responsive across phones, tablets, and laptops",
-    "Fast squad submission with receipt upload",
-    "Approved teams published live for the public",
+    `${SITE_BRAND.title} official tournament entry`,
+    "Squad submissions and payment confirmation",
+    "Approved teams and tournament notices",
+    `${SITE_BRAND.location} cricket season`,
   ];
 
   function closeMenu() {
@@ -31,12 +32,16 @@ function MainLayout() {
           <div className="flex items-start justify-between gap-4">
             <Link className="min-w-0" to="/" onClick={closeMenu}>
               <span className="brand-chip">{SITE_BRAND.location} League</span>
-              <h1 className="headline-glow mt-3 font-display text-2xl font-bold text-ink sm:text-3xl">
-                {SITE_BRAND.title}
-              </h1>
+              <div className="brand-lockup mt-3">
+                <span className="brand-emblem">
+                  <SportsIcon icon="trophy" className="h-6 w-6" />
+                </span>
+                <h1 className="headline-glow font-display text-2xl font-bold text-ink sm:text-3xl">
+                  {SITE_BRAND.title}
+                </h1>
+              </div>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-                {SITE_BRAND.subtitle} with a sharper match-day feel, faster navigation, and a
-                cleaner registration journey.
+                Official tournament information, team entry, and approved squad listings.
               </p>
             </Link>
 
@@ -85,10 +90,10 @@ function MainLayout() {
 
             <div className="hidden sm:flex sm:flex-wrap sm:items-center sm:justify-end sm:gap-2">
               <span className="rounded-full border border-white/60 bg-white/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-slate-500 shadow-sm">
-                Fast Registration
+                Official Entry
               </span>
               <span className="rounded-full border border-white/60 bg-white/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-slate-500 shadow-sm">
-                Live Team Board
+                Approved Squads
               </span>
             </div>
           </div>
@@ -130,8 +135,8 @@ function MainLayout() {
             <div>
               <p className="section-kicker">Ground Control</p>
               <p className="mt-2 max-w-2xl leading-7">
-                <span className="font-semibold text-ink">{SITE_BRAND.title}</span> keeps squads,
-                schedules, and approvals organized for a smoother tournament build-up in{" "}
+                <span className="font-semibold text-ink">{SITE_BRAND.title}</span> brings team
+                entry, tournament notices, and approved squads together for the competition in{" "}
                 {SITE_BRAND.location}.
               </p>
             </div>
@@ -176,39 +181,7 @@ function MainLayout() {
 }
 
 function NavIcon({ icon }) {
-  if (icon === "guide") {
-    return (
-      <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24" fill="none">
-        <path d="M6 5.5 12 3l6 2.5v13L12 21l-6-2.5v-13Z" stroke="currentColor" strokeWidth="1.7" />
-        <path d="M9.5 9.5h5M9.5 13h5M9.5 16.5h3" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      </svg>
-    );
-  }
-
-  if (icon === "bat") {
-    return (
-      <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24" fill="none">
-        <path d="m8 16 6.5-9.5c.9-1.2 2.6-1.5 3.8-.6l.2.1c1.2.9 1.5 2.6.6 3.8L12.6 19" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-        <path d="m7 17-2.3 2.3c-.7.7-.7 1.7 0 2.4s1.7.7 2.4 0L9.4 19" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      </svg>
-    );
-  }
-
-  if (icon === "teams") {
-    return (
-      <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24" fill="none">
-        <circle cx="8" cy="9" r="3" stroke="currentColor" strokeWidth="1.7" />
-        <circle cx="16" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.7" />
-        <path d="M3.5 19c.7-2.6 2.8-4 4.5-4s3.8 1.4 4.5 4M12 19c.5-2.1 2.1-3.2 4-3.2 1.5 0 3 .8 4 3.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24" fill="none">
-      <path d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1v-7.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-    </svg>
-  );
+  return <SportsIcon icon={icon} className="h-4 w-4" />;
 }
 
 export default MainLayout;

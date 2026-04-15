@@ -418,8 +418,8 @@ function TeamRegistrationPage() {
               Register your squad for {tournament?.title}
             </h2>
             <p className="mt-4 text-base leading-8 text-slate-600">
-              The form now follows a cleaner match-day flow: payment first, squad second,
-              leadership selection third, and a final summary before submission.
+              Complete the official team entry with payment details, squad members, leadership
+              selection, and final confirmation before submission.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
@@ -486,7 +486,7 @@ function TeamRegistrationPage() {
                     Registration Flow
                   </p>
                   <h3 className="mt-2 font-display text-2xl font-semibold text-white">
-                    Built for quick submission
+                    Official Entry Order
                   </h3>
                 </div>
                 <div className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm font-semibold text-white">

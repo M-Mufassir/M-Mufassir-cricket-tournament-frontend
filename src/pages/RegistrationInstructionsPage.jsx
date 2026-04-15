@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 
 import AlertMessage from "../components/common/AlertMessage";
 import CricketMotionScene from "../components/common/CricketMotionScene";
+import CricketPosterCard from "../components/common/CricketPosterCard";
 import EmptyState from "../components/common/EmptyState";
 import PageLoader from "../components/common/PageLoader";
+import SportsIcon from "../components/common/SportsIcon";
 import { getPublicTournament } from "../services/publicApi";
 import { formatCurrency, formatDate } from "../utils/formatters";
 
@@ -48,11 +50,31 @@ function RegistrationInstructionsPage() {
   }
 
   const instructionItems = [
-    `Complete the team registration before ${formatDate(tournament.registrationDeadline)}.`,
-    `Prepare a squad with 11 to ${tournament.maxPlayersPerTeam} players.`,
-    `Pay the tournament entry fee of ${formatCurrency(tournament.entryFee)} before submitting.`,
-    "Upload a clear payment receipt in PDF, JPG, JPEG, or PNG format.",
-    "Wait for an admin to review and approve your team submission.",
+    {
+      icon: "calendar",
+      title: "Prepare",
+      description: `Complete the team registration before ${formatDate(tournament.registrationDeadline)}.`,
+    },
+    {
+      icon: "teams",
+      title: "Build Squad",
+      description: `Prepare a squad with 11 to ${tournament.maxPlayersPerTeam} players.`,
+    },
+    {
+      icon: "fee",
+      title: "Pay Fee",
+      description: `Pay the tournament entry fee of ${formatCurrency(tournament.entryFee)} before submitting.`,
+    },
+    {
+      icon: "receipt",
+      title: "Upload Proof",
+      description: "Upload a clear payment receipt in PDF, JPG, JPEG, or PNG format.",
+    },
+    {
+      icon: "shield-check",
+      title: "Wait Review",
+      description: "Wait for an admin to review and approve your team submission.",
+    },
   ];
 
   return (
@@ -72,18 +94,27 @@ function RegistrationInstructionsPage() {
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
             <div className="hero-stat">
+              <div className="hero-stat-icon">
+                <SportsIcon icon="calendar" className="h-5 w-5" />
+              </div>
               <p className="hero-stat-label">Deadline</p>
               <p className="mt-2 font-display text-xl font-semibold text-ink">
                 {formatDate(tournament.registrationDeadline)}
               </p>
             </div>
             <div className="hero-stat">
+              <div className="hero-stat-icon">
+                <SportsIcon icon="fee" className="h-5 w-5" />
+              </div>
               <p className="hero-stat-label">Entry Fee</p>
               <p className="mt-2 font-display text-xl font-semibold text-ink">
                 {formatCurrency(tournament.entryFee)}
               </p>
             </div>
             <div className="hero-stat">
+              <div className="hero-stat-icon">
+                <SportsIcon icon="teams" className="h-5 w-5" />
+              </div>
               <p className="hero-stat-label">Squad Range</p>
               <p className="mt-2 font-display text-xl font-semibold text-ink">
                 11 - {tournament.maxPlayersPerTeam}
@@ -123,14 +154,15 @@ function RegistrationInstructionsPage() {
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         {instructionItems.map((item, index) => (
-          <article key={item} className="soft-card p-5">
+          <article key={item.title} className="soft-card p-5">
+            <div className="hero-stat-icon">
+              <SportsIcon icon={item.icon} className="h-5 w-5" />
+            </div>
             <p className="text-xs font-bold uppercase tracking-[0.3em] text-pitch-600">
               Step 0{index + 1}
             </p>
-            <p className="mt-3 font-display text-xl font-semibold text-ink">
-              {["Prepare", "Build Squad", "Pay Fee", "Upload Proof", "Wait Review"][index]}
-            </p>
-            <p className="mt-3 text-sm leading-7 text-slate-700">{item}</p>
+            <p className="mt-3 font-display text-xl font-semibold text-ink">{item.title}</p>
+            <p className="mt-3 text-sm leading-7 text-slate-700">{item.description}</p>
           </article>
         ))}
       </section>
@@ -142,17 +174,27 @@ function RegistrationInstructionsPage() {
             Before you hit submit
           </h3>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-[1.4rem] border border-white/65 bg-white/75 p-4">
+            <div className="icon-card">
+              <div className="icon-card__icon">
+                <SportsIcon icon="camera" className="h-5 w-5" />
+              </div>
+              <div>
               <p className="text-sm font-semibold text-ink">Clear receipt uploaded</p>
               <p className="mt-2 text-sm leading-7 text-slate-600">
                 Bank slip, transfer confirmation, or payment photo should be readable.
               </p>
+              </div>
             </div>
-            <div className="rounded-[1.4rem] border border-white/65 bg-white/75 p-4">
+            <div className="icon-card">
+              <div className="icon-card__icon">
+                <SportsIcon icon="shield-check" className="h-5 w-5" />
+              </div>
+              <div>
               <p className="text-sm font-semibold text-ink">Leadership selected</p>
               <p className="mt-2 text-sm leading-7 text-slate-600">
                 Choose one captain and one vice captain after the squad is complete.
               </p>
+              </div>
             </div>
           </div>
         </div>
@@ -166,6 +208,19 @@ function RegistrationInstructionsPage() {
             verify entries quickly.
           </p>
         </div>
+      </section>
+
+      <section className="poster-grid">
+        <CricketPosterCard
+          variant="strategy"
+          title="Entry Sequence"
+          subtitle="A clear visual reference for the order of team entry, payment confirmation, and review."
+        />
+        <CricketPosterCard
+          variant="stadium"
+          title="Tournament Setting"
+          subtitle="Keeps the instructions page aligned with the tone of the competition and official notices."
+        />
       </section>
     </div>
   );
