@@ -11,6 +11,7 @@ import { getApprovedTeams, getPublicTournament } from "../services/publicApi";
 function ApprovedTeamsPage() {
   const [approvedTeams, setApprovedTeams] = useState([]);
   const [tournamentId, setTournamentId] = useState(null);
+  const [expandedTeamId, setExpandedTeamId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -111,70 +112,104 @@ function ApprovedTeamsPage() {
       <section className="grid gap-5 lg:grid-cols-2">
         {approvedTeams.map((team) => (
           <article key={team.id} className="soft-card overflow-hidden p-0">
-            <div className="border-b border-white/60 bg-gradient-to-r from-field-600 to-field-500 px-6 py-4 text-white">
-              <p className="text-xs font-bold uppercase tracking-[0.24em] text-field-50/85">
-                {team.tournamentTitle}
-              </p>
-              <h3 className="mt-2 font-display text-2xl font-semibold">{team.teamName}</h3>
-            </div>
+            <button
+              type="button"
+              className="w-full text-left"
+              onClick={() =>
+                setExpandedTeamId((currentTeamId) => (currentTeamId === team.id ? null : team.id))
+              }
+            >
+              <div className="border-b border-white/60 bg-gradient-to-r from-field-600 to-field-500 px-6 py-4 text-white">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-field-50/85">
+                      {team.tournamentTitle}
+                    </p>
+                    <h3 className="mt-2 font-display text-2xl font-semibold">{team.teamName}</h3>
+                  </div>
 
-            <div className="p-6">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <div className="flex flex-wrap gap-2">
-                  <span className="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-white">
-                    Captain: {team.captainName || "Not set"}
-                  </span>
-                  <span className="rounded-full bg-pitch-500 px-3 py-1 text-xs font-semibold text-white">
-                    Vice Captain: {team.viceCaptainName || "Not set"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="rounded-2xl bg-cream px-4 py-3 text-left sm:text-right">
-                <div className="mb-2 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-field-700 shadow-sm sm:ml-auto">
-                  <SportsIcon icon="location" className="h-5 w-5" />
-                </div>
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
-                  Venue
-                </p>
-                <p className="mt-2 text-sm font-semibold text-slate-800">
-                  {team.tournamentLocation}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 rounded-3xl border border-white/70 bg-slate-50/90 p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-slate-500">
-                Squad
-              </p>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                {team.players.map((player, index) => (
-                  <div
-                    key={player.id || `${player.nicNumber}-${index}`}
-                    className={`rounded-2xl border px-4 py-3 ${
-                      player.isCaptain
-                        ? "border-ink/20 bg-ink text-white"
-                        : player.isViceCaptain
-                          ? "border-pitch-200 bg-pitch-50"
-                          : "border-slate-200 bg-white"
+                  <span
+                    className={`mt-1 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 transition ${
+                      expandedTeamId === team.id ? "rotate-180" : ""
                     }`}
                   >
-                    <p className={`text-sm font-semibold ${player.isCaptain ? "text-white" : "text-ink"}`}>
-                      {player.fullName}
-                      {player.isCaptain ? " (Captain)" : ""}
-                      {player.isViceCaptain ? " (Vice Captain)" : ""}
-                    </p>
-                    <p className={`mt-1 text-xs uppercase tracking-[0.2em] ${
-                      player.isCaptain ? "text-white/75" : "text-slate-500"
-                    }`}>
-                      {player.role}
+                    <SportsIcon icon="chevron-down" className="h-5 w-5" />
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap gap-2">
+                      <span className="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-white">
+                        Captain: {team.captainName || "Not set"}
+                      </span>
+                      <span className="rounded-full bg-pitch-500 px-3 py-1 text-xs font-semibold text-white">
+                        Vice Captain: {team.viceCaptainName || "Not set"}
+                      </span>
+                    </div>
+
+                    <p className="text-sm font-medium text-slate-600">
+                      {expandedTeamId === team.id ? "Hide squad list" : "View full squad"}
                     </p>
                   </div>
-                ))}
+
+                  <div className="rounded-2xl bg-cream px-4 py-3 text-left sm:text-right">
+                    <div className="mb-2 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-field-700 shadow-sm sm:ml-auto">
+                      <SportsIcon icon="location" className="h-5 w-5" />
+                    </div>
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
+                      Venue
+                    </p>
+                    <p className="mt-2 text-sm font-semibold text-slate-800">
+                      {team.tournamentLocation}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-            </div>
+            </button>
+
+            {expandedTeamId === team.id ? (
+              <div className="border-t border-white/60 px-6 pb-6 pt-1">
+                <div className="rounded-3xl border border-white/70 bg-slate-50/90 p-4">
+                  <p className="text-xs font-bold uppercase tracking-[0.25em] text-slate-500">
+                    Squad
+                  </p>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    {team.players.map((player, index) => (
+                      <div
+                        key={player.id || `${player.nicNumber}-${index}`}
+                        className={`rounded-2xl border px-4 py-3 ${
+                          player.isCaptain
+                            ? "border-ink/20 bg-ink text-white"
+                            : player.isViceCaptain
+                              ? "border-pitch-200 bg-pitch-50"
+                              : "border-slate-200 bg-white"
+                        }`}
+                      >
+                        <p
+                          className={`text-sm font-semibold ${
+                            player.isCaptain ? "text-white" : "text-ink"
+                          }`}
+                        >
+                          {player.fullName}
+                          {player.isCaptain ? " (Captain)" : ""}
+                          {player.isViceCaptain ? " (Vice Captain)" : ""}
+                        </p>
+                        <p
+                          className={`mt-1 text-xs uppercase tracking-[0.2em] ${
+                            player.isCaptain ? "text-white/75" : "text-slate-500"
+                          }`}
+                        >
+                          {player.role}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </article>
         ))}
       </section>

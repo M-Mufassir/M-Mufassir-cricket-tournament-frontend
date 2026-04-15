@@ -194,6 +194,20 @@ function SportsIcon({ icon, className = "h-5 w-5", strokeWidth = 1.8 }) {
     );
   }
 
+  if (icon === "chevron-down") {
+    return (
+      <svg aria-hidden="true" className={className} viewBox="0 0 24 24" fill="none">
+        <path
+          d="m6 9 6 6 6-6"
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
   return (
     <svg aria-hidden="true" className={className} viewBox="0 0 24 24" fill="none">
       <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth={strokeWidth} />
