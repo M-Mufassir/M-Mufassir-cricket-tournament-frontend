@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import AlertMessage from "../components/common/AlertMessage";
+import CricketMotionScene from "../components/common/CricketMotionScene";
 import PageLoader from "../components/common/PageLoader";
 import PlayerFields from "../components/forms/PlayerFields";
 import { getPublicTournament, registerTeam } from "../services/publicApi";
@@ -403,66 +404,133 @@ function TeamRegistrationPage() {
           Number(formData.viceCaptainIndex)
         )
       : "Not selected";
+  const completionPercentage = Math.round(((currentStep + 1) / registrationSteps.length) * 100);
 
   return (
     <div className="space-y-8">
-      <section className="hero-frame relative overflow-hidden px-6 py-8 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-        <div>
-          <p className="section-kicker">Team Registration</p>
-          <h2 className="mt-4 font-display text-4xl font-bold text-ink">
-            Register your squad for {tournament?.title}
-          </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">
-            The form now follows a clean order: payment first, squad second, captain selection
-            third, and final summary before submission.
-          </p>
+      <section className="hero-frame relative overflow-hidden px-5 py-6 sm:px-8 lg:px-10">
+        <div className="absolute right-0 top-0 h-44 w-44 rounded-full bg-field-200/30 blur-3xl" />
+        <div className="absolute bottom-0 left-10 h-32 w-32 rounded-full bg-pitch-300/25 blur-3xl" />
+        <div className="relative grid gap-8 xl:grid-cols-[1.02fr_0.98fr] xl:items-center">
+          <div>
+            <p className="section-kicker">Team Registration</p>
+            <h2 className="headline-glow mt-4 font-display text-4xl font-bold text-ink sm:text-5xl">
+              Register your squad for {tournament?.title}
+            </h2>
+            <p className="mt-4 text-base leading-8 text-slate-600">
+              The form now follows a cleaner match-day flow: payment first, squad second,
+              leadership selection third, and a final summary before submission.
+            </p>
 
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            <div className="info-card">
-              <p className="info-card-label">Location</p>
-              <p className="info-card-value">{tournament?.location}</p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              <span className="rounded-full border border-field-200 bg-field-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.24em] text-field-800">
+                Step {currentStep + 1} of {registrationSteps.length}
+              </span>
+              <span className="rounded-full border border-white/70 bg-white/80 px-4 py-2 text-xs font-bold uppercase tracking-[0.24em] text-slate-600">
+                {completionPercentage}% complete
+              </span>
             </div>
-            <div className="info-card">
-              <p className="info-card-label">Entry Fee</p>
-              <p className="info-card-value">{formatCurrency(tournament?.entryFee)}</p>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              <div className="hero-stat">
+                <p className="hero-stat-label">Location</p>
+                <p className="mt-2 font-display text-xl font-semibold text-ink">
+                  {tournament?.location}
+                </p>
+              </div>
+              <div className="hero-stat">
+                <p className="hero-stat-label">Entry Fee</p>
+                <p className="mt-2 font-display text-xl font-semibold text-ink">
+                  {formatCurrency(tournament?.entryFee)}
+                </p>
+              </div>
+              <div className="hero-stat">
+                <p className="hero-stat-label">Deadline</p>
+                <p className="mt-2 font-display text-xl font-semibold text-ink">
+                  {formatDate(tournament?.registrationDeadline)}
+                </p>
+              </div>
             </div>
-            <div className="info-card">
-              <p className="info-card-label">Deadline</p>
-              <p className="info-card-value">{formatDate(tournament?.registrationDeadline)}</p>
+
+            <div className="mt-8 overflow-x-auto pb-2">
+              <div className="flex min-w-max gap-3">
+                {registrationSteps.map((step, index) => (
+                  <div
+                    key={`hero-step-${step.id}`}
+                    className={`min-w-[200px] rounded-[1.5rem] border px-4 py-4 ${
+                      currentStep === index
+                        ? "border-field-300 bg-field-50 shadow-md"
+                        : currentStep > index
+                          ? "border-white/70 bg-white/85"
+                          : "border-white/55 bg-white/65"
+                    }`}
+                  >
+                    <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-500">
+                      Step 0{index + 1}
+                    </p>
+                    <p className="mt-2 font-display text-lg font-semibold text-ink">{step.title}</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{step.description}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="rounded-[2rem] border border-white/15 bg-slate-950/90 p-6 text-white shadow-2xl shadow-slate-950/25 backdrop-blur-2xl">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-field-200">
-            Registration Flow
-          </p>
-          <div className="mt-5 space-y-4">
-            {registrationSteps.map((step, index) => (
-              <div
-                key={step.id}
-                className={`rounded-3xl border px-4 py-3 ${
-                  currentStep === index
-                    ? "border-field-300/70 bg-field-400/25 shadow-lg shadow-field-500/10"
-                    : currentStep > index
-                      ? "border-white/20 bg-white/10"
-                      : "border-white/10 bg-slate-900/60"
-                }`}
-              >
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-field-100">
-                  Step 0{index + 1}
-                </p>
-                <p className="mt-2 font-display text-lg font-semibold text-white">{step.title}</p>
-                <p className="mt-1 text-sm text-slate-100/90">{step.description}</p>
+          <div className="space-y-4">
+            <CricketMotionScene compact />
+
+            <div className="surface-dark p-5 sm:p-6">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.25em] text-field-100">
+                    Registration Flow
+                  </p>
+                  <h3 className="mt-2 font-display text-2xl font-semibold text-white">
+                    Built for quick submission
+                  </h3>
+                </div>
+                <div className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
+                  {formData.players.length} / {maxPlayers} players
+                </div>
               </div>
-            ))}
+
+              <div className="mt-5 h-2 rounded-full bg-white/10">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-field-300 to-pitch-400"
+                  style={{ width: `${completionPercentage}%` }}
+                />
+              </div>
+
+              <div className="mt-5 space-y-3">
+                {registrationSteps.map((step, index) => (
+                  <div
+                    key={step.id}
+                    className={`rounded-[1.5rem] border px-4 py-3 ${
+                      currentStep === index
+                        ? "border-field-300/70 bg-field-400/25 shadow-lg shadow-field-500/10"
+                        : currentStep > index
+                          ? "border-white/20 bg-white/10"
+                          : "border-white/10 bg-slate-900/60"
+                    }`}
+                  >
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-field-100">
+                      Step 0{index + 1}
+                    </p>
+                    <p className="mt-2 font-display text-lg font-semibold text-white">
+                      {step.title}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-100/90">{step.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <AlertMessage type={feedback.type} message={feedback.message} />
 
-      <form className="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]" onSubmit={handleSubmit}>
+      <form className="grid gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(300px,0.65fr)]" onSubmit={handleSubmit}>
         <div className="space-y-6">
           <section className="soft-card p-6 sm:p-8">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -534,9 +602,9 @@ function TeamRegistrationPage() {
             ) : null}
 
             {currentStep === 1 ? (
-                <div className="mt-8 space-y-4">
-                  <div className="rounded-[1.8rem] border border-field-100 bg-field-100/85 px-5 py-4 shadow-sm">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="mt-8 space-y-4">
+                <div className="rounded-[1.8rem] border border-field-100 bg-field-100/85 px-5 py-4 shadow-sm">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-sm text-slate-600">
                       Add players one by one. After each player is added, the form resets and the
                       squad list appears underneath.
@@ -544,14 +612,14 @@ function TeamRegistrationPage() {
 
                     <button
                       type="button"
-                      className="secondary-button gap-2"
+                      className="secondary-button w-full sm:w-auto"
                       onClick={addPlayer}
                       disabled={editingPlayerIndex === null && formData.players.length >= maxPlayers}
                     >
                       <span className="text-lg leading-none">+</span>
                       {editingPlayerIndex === null ? "Add Player" : "Update Player"}
                     </button>
-                    </div>
+                  </div>
                 </div>
 
                 <PlayerFields
@@ -564,10 +632,10 @@ function TeamRegistrationPage() {
                   showRemoveButton={false}
                 />
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row">
                   <button
                     type="button"
-                    className="primary-button"
+                    className="primary-button w-full sm:w-auto"
                     onClick={addPlayer}
                     disabled={editingPlayerIndex === null && formData.players.length >= maxPlayers}
                   >
@@ -577,7 +645,7 @@ function TeamRegistrationPage() {
                   {editingPlayerIndex !== null ? (
                     <button
                       type="button"
-                      className="secondary-button"
+                      className="secondary-button w-full sm:w-auto"
                       onClick={() => resetPlayerDraft(formData.players.length)}
                     >
                       Cancel Edit
@@ -790,9 +858,9 @@ function TeamRegistrationPage() {
             ) : null}
           </section>
 
-          <div className="flex flex-wrap justify-between gap-3">
+          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
             <button
-              className="secondary-button"
+              className="secondary-button w-full sm:w-auto"
               type="button"
               onClick={goToPreviousStep}
               disabled={currentStep === 0 || isSubmitting}
@@ -801,11 +869,11 @@ function TeamRegistrationPage() {
             </button>
 
             {currentStep < registrationSteps.length - 1 ? (
-              <button className="primary-button" type="button" onClick={goToNextStep}>
+              <button className="primary-button w-full sm:w-auto" type="button" onClick={goToNextStep}>
                 Continue
               </button>
             ) : (
-              <button className="primary-button" disabled={isSubmitting} type="submit">
+              <button className="primary-button w-full sm:w-auto" disabled={isSubmitting} type="submit">
                 {isSubmitting ? "Submitting..." : "Submit Registration"}
               </button>
             )}
@@ -813,7 +881,7 @@ function TeamRegistrationPage() {
         </div>
 
         <aside className="space-y-4">
-          <section className="soft-card sticky top-6 p-5">
+          <section className="soft-card sticky top-28 p-5">
             <p className="section-kicker">Registration Snapshot</p>
             <h3 className="mt-2 font-display text-2xl font-semibold text-ink">
               Before You Submit

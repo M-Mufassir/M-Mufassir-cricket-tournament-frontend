@@ -11,7 +11,7 @@ function PlayerFields({
 }) {
   return (
     <div className="soft-card p-5">
-      <div className="mb-4 flex items-center justify-between gap-3">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="section-kicker">Player {index + 1}</p>
           <h3 className="font-display text-lg font-semibold text-ink">Squad Member Details</h3>
@@ -22,7 +22,7 @@ function PlayerFields({
             type="button"
             onClick={onRemove}
             disabled={disableRemove}
-            className="rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-700 transition hover:border-slate-400 disabled:cursor-not-allowed disabled:opacity-40"
+            className="w-full rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-700 transition hover:border-slate-400 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
           >
             Remove
           </button>

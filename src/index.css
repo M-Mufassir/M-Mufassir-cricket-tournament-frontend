@@ -5,12 +5,13 @@
 @tailwind utilities;
 
 :root {
-  color: #0f172a;
+  color: #081120;
+  color-scheme: light;
   background:
-    radial-gradient(circle at top left, rgba(127, 219, 255, 0.34), transparent 26%),
-    radial-gradient(circle at top right, rgba(249, 115, 22, 0.16), transparent 22%),
-    radial-gradient(circle at bottom left, rgba(20, 150, 212, 0.14), transparent 28%),
-    linear-gradient(180deg, #f6fbff 0%, #eef4ff 52%, #fff7ef 100%);
+    radial-gradient(circle at top left, rgba(86, 200, 255, 0.3), transparent 24%),
+    radial-gradient(circle at top right, rgba(249, 115, 22, 0.18), transparent 22%),
+    radial-gradient(circle at bottom left, rgba(20, 150, 212, 0.12), transparent 28%),
+    linear-gradient(180deg, #f4fbff 0%, #e9f4ff 48%, #fff4e7 100%);
   font-family: "Manrope", sans-serif;
 }
 
@@ -22,12 +23,13 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  color: #0f172a;
+  overflow-x: hidden;
+  color: #081120;
   background:
-    radial-gradient(circle at top left, rgba(127, 219, 255, 0.34), transparent 26%),
-    radial-gradient(circle at top right, rgba(249, 115, 22, 0.16), transparent 22%),
-    radial-gradient(circle at bottom left, rgba(20, 150, 212, 0.14), transparent 28%),
-    linear-gradient(180deg, #f6fbff 0%, #eef4ff 52%, #fff7ef 100%);
+    radial-gradient(circle at top left, rgba(86, 200, 255, 0.3), transparent 24%),
+    radial-gradient(circle at top right, rgba(249, 115, 22, 0.18), transparent 22%),
+    radial-gradient(circle at bottom left, rgba(20, 150, 212, 0.12), transparent 28%),
+    linear-gradient(180deg, #f4fbff 0%, #e9f4ff 48%, #fff4e7 100%);
   position: relative;
 }
 
@@ -37,9 +39,27 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(120deg, rgba(255, 255, 255, 0.34), transparent 35%),
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.32), transparent 18%);
+    linear-gradient(120deg, rgba(255, 255, 255, 0.3), transparent 35%),
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.28), transparent 18%);
   opacity: 0.9;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px,
+      transparent 18px
+    ),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.02), transparent 22%);
+  mask-image: radial-gradient(circle at center, black, transparent 95%);
+  opacity: 0.75;
 }
 
 * {
@@ -50,6 +70,11 @@ body::before {
   min-height: 100vh;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 input,
 select,
 textarea,
@@ -58,23 +83,34 @@ button {
 }
 
 .glass-panel {
-  @apply rounded-3xl border border-white/40 bg-white/45 shadow-soft backdrop-blur-2xl;
+  @apply rounded-3xl border border-white/40 bg-white/60 shadow-soft backdrop-blur-2xl;
+  background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(244, 249, 255, 0.55));
 }
 
 .hero-frame {
-  @apply grid rounded-[2rem] border border-white/45 bg-white/40 shadow-soft backdrop-blur-2xl;
+  @apply grid rounded-[2rem] border border-white/40 bg-white/60 shadow-soft backdrop-blur-2xl;
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(240, 248, 255, 0.62));
 }
 
 .soft-card {
-  @apply rounded-[1.75rem] border border-white/50 bg-white/50 shadow-soft backdrop-blur-xl;
+  @apply rounded-[1.75rem] border border-white/50 bg-white/70 shadow-soft backdrop-blur-xl;
+  background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.88), rgba(243, 248, 255, 0.72));
 }
 
 .section-shell {
   @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
 }
 
+.stadium-panel {
+  @apply rounded-[2rem] border border-white/60 bg-white/70 shadow-soft backdrop-blur-2xl;
+  background-image:
+    radial-gradient(circle at top right, rgba(127, 219, 255, 0.22), transparent 28%),
+    radial-gradient(circle at bottom left, rgba(249, 115, 22, 0.14), transparent 22%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(241, 247, 255, 0.72));
+}
+
 .field-input {
-  @apply w-full rounded-2xl border border-white/50 bg-white/65 px-4 py-3 text-sm text-slate-900 outline-none backdrop-blur-md transition focus:border-field-300 focus:ring-4 focus:ring-field-100;
+  @apply w-full rounded-2xl border border-white/60 bg-white/80 px-4 py-[0.95rem] text-sm text-slate-900 outline-none backdrop-blur-md transition focus:border-field-300 focus:ring-4 focus:ring-field-100;
 }
 
 .field-label {
@@ -86,7 +122,7 @@ button {
 }
 
 .info-card {
-  @apply rounded-[1.6rem] border border-white/45 bg-white/40 px-4 py-4 shadow-soft backdrop-blur-xl;
+  @apply rounded-[1.6rem] border border-white/40 bg-white/40 px-4 py-4 shadow-soft backdrop-blur-xl;
 }
 
 .info-card-label {
@@ -98,13 +134,154 @@ button {
 }
 
 .primary-button {
-  @apply inline-flex items-center justify-center rounded-full bg-field-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-field-500/20 transition hover:-translate-y-0.5 hover:bg-field-700;
+  @apply inline-flex min-h-[3.25rem] items-center justify-center gap-2 rounded-full bg-field-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-field-500/20 transition hover:-translate-y-0.5 hover:bg-field-700;
 }
 
 .secondary-button {
-  @apply inline-flex items-center justify-center rounded-full border border-white/50 bg-white/55 px-5 py-3 text-sm font-semibold text-slate-800 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-field-200 hover:bg-white/75;
+  @apply inline-flex min-h-[3.25rem] items-center justify-center gap-2 rounded-full border border-white/50 bg-white/60 px-5 py-3 text-sm font-semibold text-slate-800 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-field-200 hover:bg-white/75;
 }
 
 .floating-help-button {
   @apply flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-field-600 text-xl font-bold text-white shadow-lg shadow-field-600/30 backdrop-blur-xl transition hover:-translate-y-1 hover:bg-field-700;
+}
+
+.brand-chip {
+  @apply inline-flex w-fit items-center rounded-full border border-field-200/80 bg-field-50 px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.28em] text-field-800;
+}
+
+.headline-glow {
+  text-shadow: 0 8px 24px rgba(21, 63, 93, 0.12);
+}
+
+.nav-pill {
+  @apply inline-flex min-h-[3rem] items-center gap-2 rounded-full border border-white/60 bg-white/70 px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm backdrop-blur-xl transition;
+}
+
+.nav-pill:hover {
+  @apply -translate-y-0.5 border-field-200 bg-white text-ink;
+}
+
+.nav-pill-active {
+  @apply border-transparent bg-ink text-white shadow-lg shadow-ink/20;
+}
+
+.mobile-sheet {
+  @apply rounded-[1.75rem] border border-white/60 bg-white/80 p-3 shadow-soft backdrop-blur-2xl;
+}
+
+.mobile-dock {
+  @apply fixed inset-x-3 bottom-3 z-40 rounded-[1.8rem] border border-white/60 bg-white/80 p-2 shadow-soft backdrop-blur-2xl md:hidden;
+}
+
+.mobile-dock-link {
+  @apply flex min-h-[4.1rem] flex-col items-center justify-center gap-1 rounded-[1.2rem] px-2 py-2 text-[0.72rem] font-semibold text-slate-500 transition;
+}
+
+.mobile-dock-link-active {
+  @apply bg-ink text-white shadow-lg shadow-ink/20;
+}
+
+.match-ticker {
+  @apply overflow-hidden rounded-full border border-white/60 bg-white/70 px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500 shadow-sm;
+}
+
+.match-ticker__track {
+  display: flex;
+  width: max-content;
+  gap: 2rem;
+  animation: marquee 24s linear infinite;
+}
+
+.hero-stat {
+  @apply rounded-[1.5rem] border border-white/60 bg-white/70 p-4 shadow-soft backdrop-blur-xl;
+}
+
+.hero-stat-label {
+  @apply text-[0.68rem] font-bold uppercase tracking-[0.24em] text-slate-500;
+}
+
+.surface-dark {
+  @apply rounded-[1.9rem] border border-white/10 bg-slate-950/90 text-white shadow-2xl shadow-slate-950/25 backdrop-blur-2xl;
+}
+
+.section-divider {
+  @apply h-px w-full bg-gradient-to-r from-transparent via-field-200/80 to-transparent;
+}
+
+.cricket-scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background:
+    radial-gradient(circle at top left, rgba(148, 230, 255, 0.3), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(249, 115, 22, 0.18), transparent 24%),
+    linear-gradient(145deg, rgba(7, 18, 34, 0.94), rgba(11, 78, 117, 0.86));
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2);
+}
+
+.cricket-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 36%),
+    radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.12), transparent 20%);
+  pointer-events: none;
+}
+
+.cricket-scene__badge {
+  @apply absolute left-4 top-4 z-10 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.28em] text-field-100 backdrop-blur-lg;
+}
+
+.cricket-scene__score {
+  @apply absolute bottom-4 right-4 z-10 rounded-[1.25rem] border border-white/10 bg-slate-950/40 px-4 py-3 text-right text-white shadow-lg backdrop-blur-xl;
+}
+
+.cricket-scene__score span {
+  @apply block text-[0.68rem] font-bold uppercase tracking-[0.2em] text-field-100/80;
+}
+
+.cricket-scene__score strong {
+  @apply mt-1 block font-display text-2xl font-semibold;
+}
+
+.animate-float-slow {
+  animation: floatSlow 6.5s ease-in-out infinite;
+}
+
+.animate-float-delay {
+  animation: floatSlow 7.5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes floatSlow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .match-ticker__track,
+  .animate-float-slow,
+  .animate-float-delay {
+    animation: none;
+  }
 }
